@@ -17,3 +17,6 @@ spec:
         image: "{{ .Values.model.image.repository }}:{{ .Values.model.image.tag }}"
         ports:
         - containerPort: 5000
+        env:
+        - name: APP_PORT
+          value: "5000"
