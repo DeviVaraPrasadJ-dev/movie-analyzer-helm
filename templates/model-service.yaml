@@ -1,11 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: model
+  name: model-svc        # 👈 IMPORTANT CHANGE
 spec:
-  type: ClusterIP
   selector:
     app: model
   ports:
-  - port: 5000
-    targetPort: 5000
+    - port: 5000
+      targetPort: 5000

@@ -9,7 +9,7 @@ backend:
     DB_HOST: ""
     DB_PORT: "5432"
     DB_NAME: ""
-    MODEL_SERVER_URL: "http://model:5000"
+    MODEL_SERVER_URL: "http://model-svc:5000"
 
 frontend:
   replicaCount: 1
