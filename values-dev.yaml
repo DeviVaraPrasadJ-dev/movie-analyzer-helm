@@ -1,20 +1,22 @@
 backend:
   image:
     repository: 433193941125.dkr.ecr.ap-south-1.amazonaws.com/movie-backend
-    tag: "14"
-  env:
+    tag: "16"
+    env:
     DB_HOST: "moviereviews-instance.cnku6m4wm4rj.ap-south-1.rds.amazonaws.com"
     DB_NAME: "moviereviews_dev"
-
+    
 frontend:
   image:
     repository: 433193941125.dkr.ecr.ap-south-1.amazonaws.com/movie-frontend
-    tag: "15"
+    tag: "16"
 
 model:
   image:
     repository: 433193941125.dkr.ecr.ap-south-1.amazonaws.com/movie-model
-    tag: "15"
+    tag: "16"
+
 
 ingress:
   host: dev.movie-analyzer.internal
+
