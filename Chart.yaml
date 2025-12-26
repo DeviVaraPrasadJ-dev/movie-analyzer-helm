@@ -1,0 +1,6 @@
+apiVersion: v2
+name: movie-analyzer
+description: Movie Analyzer Application (Frontend, Backend, Model)
+type: application
+version: 0.1.0
+appVersion: "1.0"
