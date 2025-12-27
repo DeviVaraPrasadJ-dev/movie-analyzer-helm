@@ -1,0 +1,32 @@
+{{- if .Values.dbInit.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: movie-db-init
+  namespace: {{ .Release.Namespace }}
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: psql
+        image: postgres:15
+        env:
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_PASSWORD
+        command: ["sh", "-c"]
+        args:
+        - |
+          echo "⏳ Waiting for DB..."
+          sleep 10
+
+          psql -h {{ .Values.backend.env.DB_HOST }} \
+               -U {{ .Values.dbInit.user }} \
+               -d postgres <<'EOF'
+{{ .Values.dbInit.sql | indent 12 }}
+EOF
+{{- end }}

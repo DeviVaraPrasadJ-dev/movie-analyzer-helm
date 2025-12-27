@@ -32,3 +32,68 @@ model:
 ingress:
   enabled: true
   host: ""
+dbInit:
+  enabled: false   # IMPORTANT: default false
+  user: movieuser
+  sql: |
+    -- Movie Review Database Initialization Script
+    -- This script creates multiple databases for different environments
+
+    -- Create user and set password
+    CREATE USER movieuser WITH ENCRYPTED PASSWORD 'moviepass';
+
+    -- Create databases for different environments
+    CREATE DATABASE moviereviews;        -- Production
+    CREATE DATABASE moviereviews_dev;    -- Development  
+    CREATE DATABASE moviereviews_staging; -- Staging
+
+    -- Grant permissions on all databases
+    GRANT ALL PRIVILEGES ON DATABASE moviereviews TO movieuser;
+    GRANT ALL PRIVILEGES ON DATABASE moviereviews_dev TO movieuser;
+    GRANT ALL PRIVILEGES ON DATABASE moviereviews_staging TO movieuser;
+
+    -- Initialize Production Database
+    \c moviereviews;
+
+    -- Grant schema permissions to user
+    GRANT ALL ON SCHEMA public TO movieuser;
+    GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO movieuser;
+    GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO movieuser;
+
+    -- Create reviews table
+    CREATE TABLE IF NOT EXISTS reviews (
+        id BIGSERIAL PRIMARY KEY,
+        movie_id VARCHAR(255) NOT NULL,
+        review_text VARCHAR(2000) NOT NULL,
+        sentiment VARCHAR(50),
+        sentiment_score DOUBLE PRECISION,
+        rating DOUBLE PRECISION,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    -- Create indexes for better performance
+    CREATE INDEX IF NOT EXISTS idx_reviews_movie_id ON reviews(movie_id);
+    CREATE INDEX IF NOT EXISTS idx_reviews_created_at ON reviews(created_at);
+    CREATE INDEX IF NOT EXISTS idx_reviews_sentiment ON reviews(sentiment);
+
+    -- Grant permissions on the table to movieuser
+    GRANT ALL PRIVILEGES ON TABLE reviews TO movieuser;
+    GRANT USAGE, SELECT ON SEQUENCE reviews_id_seq TO movieuser;
+
+    -- Create a view for review statistics
+    CREATE OR REPLACE VIEW review_stats AS
+    SELECT 
+        movie_id,
+        COUNT(*) as total_reviews,
+        AVG(rating) as avg_rating,
+        AVG(sentiment_score) as avg_sentiment_score,
+        COUNT(CASE WHEN sentiment = 'positive' THEN 1 END) as positive_reviews,
+        COUNT(CASE WHEN sentiment = 'negative' THEN 1 END) as negative_reviews,
+        COUNT(CASE WHEN sentiment = 'neutral' THEN 1 END) as neutral_reviews,
+        MAX(created_at) as latest_review
+    FROM reviews 
+    GROUP BY movie_id;
+
+    -- Grant permissions on the view
+        GRANT ALL PRIVILEGES ON TABLE 
+        
