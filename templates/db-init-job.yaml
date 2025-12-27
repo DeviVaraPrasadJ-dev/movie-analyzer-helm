@@ -27,13 +27,9 @@ spec:
           args:
             - |
               echo "⏳ Waiting for database..."
-              sleep 15
+              sleep 20
 
-              psql \
-                -h {{ .Values.backend.env.DB_HOST }} \
-                -U {{ .Values.dbInit.user }} \
-                -d postgres \
-                -f /sql/init.sql
+              psql "host={{ .Values.backend.env.DB_HOST }} user={{ .Values.dbInit.user }} dbname=postgres sslmode=require" -f /sql/init.sql
       volumes:
         - name: sql
           configMap:

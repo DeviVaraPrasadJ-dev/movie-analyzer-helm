@@ -5,6 +5,7 @@ backend:
     env:
     DB_HOST: "moviereviews-instance.cnku6m4wm4rj.ap-south-1.rds.amazonaws.com"
     DB_NAME: "moviereviews_dev"
+    DB_PORT: "5432"
     
 frontend:
   image:
@@ -23,3 +24,4 @@ ingress:
 dbInit:
   enabled: true
   user: movieuser
+
