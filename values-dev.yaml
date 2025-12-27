@@ -22,6 +22,6 @@ ingress:
   host: dev.movie-analyzer.internal
 
 dbInit:
-  enabled: true
+  enabled: false
   user: movieuser
 
