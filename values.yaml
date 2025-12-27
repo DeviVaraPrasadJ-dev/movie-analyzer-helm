@@ -38,7 +38,7 @@ ingress:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-1:YOUR_ACCOUNT_ID:certificate/YOUR_CERT_ID #changeit
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-1:433193941125:certificate/fdbc4670-401b-47f2-8139-d5ebd74e9375
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
 
