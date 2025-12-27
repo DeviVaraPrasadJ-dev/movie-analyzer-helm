@@ -3,7 +3,7 @@ backend:
     repository: 433193941125.dkr.ecr.ap-south-1.amazonaws.com/movie-backend
     tag: "16"
     env:
-    DB_HOST: "moviereviews-instance.cnku6m4wm4rj.ap-south-1.rds.amazonaws.com"
+    DB_HOST: "movie-analyzer-db.crimuwie2ihu.ap-south-1.rds.amazonaws.com"
     DB_NAME: "moviereviews_dev"
     DB_PORT: "5432"
     
