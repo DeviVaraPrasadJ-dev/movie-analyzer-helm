@@ -31,9 +31,14 @@ model:
 
 ingress:
   enabled: true
-  host: ""
+  host: jami.movie.review.site
+  className: alb
 
-dbInit:
-  enabled: true
-  user: movieuser
-  sqlConfigMapName: movie-db-init-sql
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-1:YOUR_ACCOUNT_ID:certificate/YOUR_CERT_ID #changeit
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+
