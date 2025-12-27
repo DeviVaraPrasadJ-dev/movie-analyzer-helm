@@ -10,23 +10,32 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-      - name: psql
-        image: postgres:15
-        env:
-        - name: PGPASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: db-secret
-              key: DB_PASSWORD
-        command: ["sh", "-c"]
-        args:
-        - |
-          echo "⏳ Waiting for DB..."
-          sleep 10
+        - name: psql
+          image: postgres:15
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASSWORD
+          volumeMounts:
+            - name: sql
+              mountPath: /sql
+          command:
+            - sh
+            - -c
+          args:
+            - |
+              echo "⏳ Waiting for database..."
+              sleep 15
 
-          psql -h {{ .Values.backend.env.DB_HOST }} \
-               -U {{ .Values.dbInit.user }} \
-               -d postgres <<'EOF'
-{{ .Values.dbInit.sql | indent 12 }}
-EOF
+              psql \
+                -h {{ .Values.backend.env.DB_HOST }} \
+                -U {{ .Values.dbInit.user }} \
+                -d postgres \
+                -f /sql/init.sql
+      volumes:
+        - name: sql
+          configMap:
+            name: movie-db-init-sql
 {{- end }}

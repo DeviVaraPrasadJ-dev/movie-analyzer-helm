@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: movie-db-init-sql
+  namespace: {{ .Release.Namespace }}
+data:
+  init.sql: |
+{{ .Files.Get "sql/init.sql" | indent 4 }}
